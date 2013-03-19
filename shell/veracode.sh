@@ -38,7 +38,7 @@ SUMMARY_REPORT_PDF_FILE="$RESULTS_DIR"/"veracode.summary.pdf"
 PRESCAN_SLEEP_TIME=300
 SCAN_SLEEP_TIME=300
 
-# Email Settings
+# Email Settings (Disabled, uncomment at the bottom to enable)
 SUBJECT="Veracode Results ($VERSION)"
 TO_ADDR=""
 FROM_ADDR=""
@@ -191,6 +191,7 @@ function download {
 	fi
 }
 
+# Emails the reports
 function email {
 	echo "[+] Emailing all reports"
 	mailx -s "$SUBJECT" -a "$DETAILED_REPORT_PDF_FILE" -a "$SUMMARY_REPORT_PDF_FILE" -a "$DETAILED_REPORT_XML_FILE" -r $FROM_ADDR $TO_ADDR
@@ -214,7 +215,7 @@ pollscan
 
 download
 
-email
+#email
 
 echo "Complete - `date`"
 
