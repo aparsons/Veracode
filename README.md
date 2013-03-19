@@ -1,4 +1,4 @@
-#### Warning: *Many of the scripts won't work out of the box. They will require settings or some customization.*
+#### Warning: *This script won't work out of the box. It will require settings or some customization.*
 
 ### [shell/veracode.sh](shell/veracode.sh) directory [version]
 Arguments:
