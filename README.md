@@ -1,3 +1,5 @@
+#### Warning: *Many of the scripts won't work out of the box. They will require settings or some customization.*
+
 ### shell/veracode.sh directory [version]
 Arguments:
 * directory: **Required**. Directory path containing the files you wish to submit in your scan (not recursive)
