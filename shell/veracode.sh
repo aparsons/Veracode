@@ -100,9 +100,11 @@ function uploadfiles {
 	# Validate all files were successfully uploaded
 	for file in $UPLOAD_DIR/*
 	do
-		if ! [[ "$upload_file_response" =~ (\<file file_id=\"[0-9]+\" file_name=\""${file##*/}"\" file_status=\"Uploaded\"/\>) ]]; then
-			echo "[-] Error uploading $file"
-			exit 1
+		if [[ -f "$file" ]]; then		
+				if ! [[ "$upload_file_response" =~ (\<file file_id=\"[0-9]+\" file_name=\""${file##*/}"\" file_status=\"Uploaded\"/\>) ]]; then
+				echo "[-] Error uploading $file"
+				exit 1
+			fi
 		fi
 	done
 }
