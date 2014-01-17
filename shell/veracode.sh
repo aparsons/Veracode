@@ -1,5 +1,5 @@
 #!/bin/bash
-# Veracode Upload, version 1.1
+# Veracode Upload, version 1.2
 # Adam Parsons, adam@aparsons.net
 
 # CHANGE THESE SETTINGS TO MATCH YOUR CONFIGURATION
@@ -48,7 +48,7 @@ function validate_response {
 	local response="$1"
 
 	# Check if response is XML
-	if ! [[ "$response" =~ (\<\?xml version=\"1.0\" encoding=\"UTF-8\"\?\>) ]]; then
+	if ! [[ "$response" =~ (\<\?xml version=\"1\.0\" encoding=\"UTF-8\"\?\>) ]]; then
 		echo "[-] Response body is not XML format at `date`"
 		echo "$response"
 		#exit 1		
@@ -68,7 +68,7 @@ function check_state {
 	local build_info_response=`curl --silent --compressed -u "$API_USERNAME:$API_PASSWORD" https://analysiscenter.veracode.com/api/4.0/getbuildinfo.do --data "app_id=$APP_ID"`
 	validate_response "$build_info_response"
 
-	if ! [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" published_date=\"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}\" published_date_sec=\"[0-9]+\" status=\"Results Ready\"/\>) ]]; then
+	if ! [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" published_date=\"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}\" published_date_sec=\"[0-9]+\" status=\"Results Ready\" engine_version=\"[0-9]+\"/\>) ]]; then
 		echo "[+] Removing latest build"
 		local delete_build_response=`curl --silent --compressed -u "$API_USERNAME:$API_PASSWORD" https://analysiscenter.veracode.com/api/4.0/deletebuild.do --data "app_id=$APP_ID"`
 		validate_response "$delete_build_response"
@@ -127,7 +127,7 @@ function pollprescan {
 		validate_response "$build_info_response"
 		
 		# Check if pre-scan is successful
-		if [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" status=\"Pre-Scan Success\"/\>) ]]; then
+		if [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" status=\"Pre-Scan Success\" engine_version=\"[0-9]+\"/\>) ]]; then
 			is_pre_scanning=false
 			echo -e "\n[+] Pre-scan complete"
 		else
@@ -152,7 +152,7 @@ function pollscan {
 
 		local build_info_response=`curl --silent --compressed -u "$API_USERNAME:$API_PASSWORD" https://analysiscenter.veracode.com/api/4.0/getbuildinfo.do --data "app_id=$APP_ID"`
 		validate_response "$build_info_response"
-		if [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" published_date=\"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}\" published_date_sec=\"[0-9]+\" status=\"Results Ready\"/\>) ]]; then
+		if [[ "$build_info_response" =~ (\<analysis_unit analysis_type=\"Static\" published_date=\"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}\" published_date_sec=\"[0-9]+\" status=\"Results Ready\" engine_version=\"[0-9]+\"/\>) ]]; then
 			is_scanning=false
 			echo -e "\n[+] Scan complete"
 		else
