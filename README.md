@@ -1,3 +1,5 @@
+#### Notice: Veracode is deprecating username and password authentication for Veracode APIs. If this script is not updated to work with Veracode API ID and Key it will stop working once basic auth support is fully removed. PRs welcome.
+
 #### Warning: *This script won't work out of the box. It will require settings or some customization.*
 
 ### [shell/veracode.sh](shell/veracode.sh) directory [version]
